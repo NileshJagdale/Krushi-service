@@ -22,7 +22,7 @@ Supplier.create = (newSupplier, result) => {
 };
 
 Supplier.findById = (id, result) => {
-  sql.query(`SELECT * FROM supplier WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM supplier WHERE supplierId = ${id}`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -101,9 +101,9 @@ Supplier.updateById = (id, supplier, result) => {
 };
 
 Supplier.remove = (id, result) => {
-  sql.query("UPDATE supplier SET isDeleted = true WHERE id = ?", id, (err, res) => {
+  sql.query("UPDATE supplier SET isDeleted = true WHERE supplierId = ?", id, (err, res) => {
     if (err) {
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -117,10 +117,11 @@ Supplier.remove = (id, result) => {
   });
 };
 
+
 Supplier.removeAll = result => {
   sql.query("UPDATE supplier SET isDeleted = true", (err, res) => {
     if (err) {
-      result(null, err);
+      result(err, null);
       return;
     }
     result(null, res);

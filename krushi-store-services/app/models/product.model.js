@@ -26,7 +26,7 @@ Product.create = (newProduct, result) => {
 };
 
 Product.findById = (id, result) => {
-  sql.query(`SELECT * FROM product WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM product WHERE productId = ${id}`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -51,7 +51,7 @@ Product.getAll = (isDeleted, result) => {
 
   sql.query(query, (err, res) => {
     if (err) {
-      result(null, err);
+      result(err, null);
       return;
     }
     result(null, res);
@@ -61,7 +61,7 @@ Product.getAll = (isDeleted, result) => {
 Product.getAllIsDeleted = result => {
   sql.query("SELECT * FROM product WHERE isDeleted=true", (err, res) => {
     if (err) {
-      result(null, err);
+      result(err, null);
       return;
     }
     result(null, res);
@@ -74,7 +74,7 @@ Product.updateById = (id, product, result) => {
     [product.categoryId, product.shopId, product.name, product.shortKey, product.price, product.discountPrice, product.qty, product.gst, product.batchNo, product.manufactureId, id],
     (err, res) => {
       if (err) {
-        result(null, err);
+        result(err, null);
         return;
       }
 
@@ -88,10 +88,11 @@ Product.updateById = (id, product, result) => {
   );
 };
 
+
 Product.remove = (id, result) => {
-  sql.query("UPDATE product SET isDeleted = true WHERE id = ?", id, (err, res) => {
+  sql.query("UPDATE product SET isDeleted = true WHERE productId = ?", id, (err, res) => {
     if (err) {
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -108,7 +109,7 @@ Product.remove = (id, result) => {
 Product.removeAll = result => {
   sql.query("UPDATE product SET isDeleted = true", (err, res) => {
     if (err) {
-      result(null, err);
+      result(err, null);
       return;
     }
     result(null, res);

@@ -31,7 +31,7 @@ exports.create = (req, res) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Users."
+          err.message || "Some error occurred while creating the User."
       });
     else res.send(data);
   });
@@ -44,7 +44,7 @@ exports.findAll = (req, res) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Userss."
+          err.message || "Some error occurred while retrieving Users."
       });
     else res.send(data);
   });
@@ -90,7 +90,7 @@ exports.getAllIsDeleted = (req, res) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Userss."
+          err.message || "Some error occurred while retrieving Users."
       });
     else res.send(data);
   });
@@ -112,11 +112,11 @@ exports.update = (req, res) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found Users with id ${req.params.id}.`
+            message: `Not found User with id ${req.params.id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating Users with id " + req.params.id
+            message: "Error updating User with id " + req.params.id
           });
         }
       } else res.send(data);
@@ -137,7 +137,7 @@ exports.delete = (req, res) => {
           message: "Could not delete Users with id " + req.params.id
         });
       }
-    } else res.send({ message: `Users was deleted successfully!` });
+    } else res.send({ message: `User was deleted successfully!` });
   });
 };
 
@@ -149,6 +149,6 @@ exports.deleteAll = (req, res) => {
         message:
           err.message || "Some error occurred while removing all Userss."
       });
-    else res.send({ message: `All Userss were deleted successfully!` });
+    else res.send({ message: `All Users were deleted successfully!` });
   });
 };

@@ -11,5 +11,11 @@
 
         var productRouter = require('./product.routes');
         app.use('/api/', productRouter);
+
+        var manufactureRouter = require('./manufacture.routes');
+        app.use('/api/', manufactureRouter);
+
+        var categoryRouter = require('./category.routes');
+        app.use('/api/', categoryRouter);
     };
 })(module.exports);

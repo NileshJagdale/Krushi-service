@@ -1,6 +1,6 @@
-const Products = require("../models/product.model.js");
+const Manufacrures = require("../models/manufacture.model.js");
 
-// Create and Save a new product 
+// Create and Save a new manufacture 
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -13,8 +13,8 @@ exports.create = (req, res) => {
 
   
   const date = Date.now();
-  // Create a product
-  const product = new Products({
+  // Create a manufacture
+  const manufacture = new Manufacrures({
     categoryId: req.body.categoryId,
     shopId: req.body.shopId,
     name: req.body.name,
@@ -27,20 +27,20 @@ exports.create = (req, res) => {
     manufactureId: req.body.manufactureId
   });
 
-  // Save product in the database
-  Products.create(product, (err, data) => {
+  // Save manufacture in the database
+  Manufacrures.create(manufacture, (err, data) => {
     if (err)
       res.status(500).send({
         message: 
-          err.message || "Some error occurred while creating the product."
+          err.message || "Some error occurred while creating the manufacture."
       });
     else res.send(data);
   });
 };
 
-// Retrieve all Products from the database (with condition).
+// Retrieve all Manufacrures from the database (with condition).
 exports.findAll = (req, res) => {
-  Products.getAll(req.query.isDeleted, (err, data) => {
+  Manufacrures.getAll(req.query.isDeleted, (err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -50,36 +50,36 @@ exports.findAll = (req, res) => {
   });
 };
 
-// Find a single product by Id
+// Find a single manufacture by Id
 exports.findOne = (req, res) => {
-  Products.findById(req.params.id, (err, data) => {
+  Manufacrures.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found product with id ${req.params.id}.`
+          message: `Not found manufacture with id ${req.params.id}.`
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving product with id " + req.params.id
+          message: "Error retrieving manufacture with id " + req.params.id
         });
       }
     } else res.send(data);
   });
 };
 
-// find all published Products
+// find all published Manufacrures
 exports.getAllIsDeleted = (req, res) => {
-  Products.getAllIsDeleted((err, data) => {
+  Manufacrures.getAllIsDeleted((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Products."
+          err.message || "Some error occurred while retrieving Manufacrures."
       });
     else res.send(data);
   });
 };
 
-// Update a product identified by the id in the request
+// Update a manufacture identified by the id in the request
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
@@ -88,18 +88,18 @@ exports.update = (req, res) => {
     });
   }
 
-  Products.updateById(
+  Manufacrures.updateById(
     req.params.id,
-    new Products(req.body),
+    new Manufacrures(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found product with id ${req.params.id}.`
+            message: `Not found manufacture with id ${req.params.id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating product with id " + req.params.id
+            message: "Error updating manufacture with id " + req.params.id
           });
         }
       } else res.send(data);
@@ -107,31 +107,31 @@ exports.update = (req, res) => {
   );
 };
 
-// Delete a product with the specified id in the request
+// Delete a manufacture with the specified id in the request
 exports.delete = (req, res) => {
-  Products.remove(req.params.id, (err, data) => {
+  Manufacrures.remove(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found product with id ${req.params.id}.`
+          message: `Not found manufacture with id ${req.params.id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete product with Productd " + req.params.id
+          message: "Could not delete manufacture with id " + req.params.id
         });
       }
-    } else res.send({ message: `product was deleted successfully!` });
+    } else res.send({ message: `manufacture was deleted successfully!` });
   });
 };
 
-// Delete all Products from the database.
+// Delete all Manufacrures from the database.
 exports.deleteAll = (req, res) => {
-  Products.removeAll((err, data) => {
+  Manufacrures.removeAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Products."
+          err.message || "Some error occurred while removing all Manufacrures."
       });
-    else res.send({ message: `All Products were deleted successfully!` });
+    else res.send({ message: `All Manufacrures were deleted successfully!` });
   });
 };
