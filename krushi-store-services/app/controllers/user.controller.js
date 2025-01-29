@@ -1,0 +1,154 @@
+const Users = require("../models/user.model.js");
+
+// Create and Save a new Users 
+exports.create = (req, res) => {
+  // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  console.log("Request Body:", req.body); // Debugging line
+
+  
+  const date = Date.now();
+  // Create a Users
+  const user = new Users({
+    name: req.body.name,
+    role: req.body.role,
+    email: req.body.email,
+    address: req.body.address,
+    mobile: req.body.mobile,
+    password: req.body.password,
+    createdAt: new Date(date),
+    createdBy: req.body.createdBy,
+    isDeleted: req.body.isDeleted,
+  });
+
+  // Save Users in the database
+  Users.create(user, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Users."
+      });
+    else res.send(data);
+  });
+};
+
+// Retrieve all Userss from the database (with condition).
+exports.findAll = (req, res) => {
+
+  Users.getAll(req.query.isDeleted, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Userss."
+      });
+    else res.send(data);
+  });
+};
+
+// Find a single Users by Id
+exports.findOne = (req, res) => {
+  Users.findById(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Users with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Users with id " + req.params.id
+        });
+      }
+    } else res.send(data);
+  });
+};
+
+// Find a single Users by mobile
+exports.findByMobile = (req, res) => {
+  Users.findByMobile(req.params.mobile, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Users with mobile ${req.params.mobile}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Users with mobile " + req.params.mobile
+        });
+      }
+    } else res.send(data);
+  });
+};
+
+// find all published Userss
+exports.getAllIsDeleted = (req, res) => {
+  Users.getAllIsDeleted((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Userss."
+      });
+    else res.send(data);
+  });
+};
+
+// Update a Users identified by the id in the request
+exports.update = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  Users.updateById(
+    req.params.id,
+    new Users(req.body),
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found Users with id ${req.params.id}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating Users with id " + req.params.id
+          });
+        }
+      } else res.send(data);
+    }
+  );
+};
+
+// Delete a Users with the specified id in the request
+exports.delete = (req, res) => {
+  Users.remove(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Users with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete Users with id " + req.params.id
+        });
+      }
+    } else res.send({ message: `Users was deleted successfully!` });
+  });
+};
+
+// Delete all Userss from the database.
+exports.deleteAll = (req, res) => {
+  Users.removeAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while removing all Userss."
+      });
+    else res.send({ message: `All Userss were deleted successfully!` });
+  });
+};
