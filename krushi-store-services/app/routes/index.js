@@ -17,5 +17,9 @@
 
         var categoryRouter = require('./category.routes');
         app.use('/api/', categoryRouter);
+
+        var orderRouter = require('./order.routes');
+        app.use('/api/', orderRouter);
+
     };
 })(module.exports);
