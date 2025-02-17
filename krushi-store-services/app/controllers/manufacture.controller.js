@@ -1,4 +1,4 @@
-const Manufacrures = require("../models/manufacture.model.js");
+const Manufactures = require("../models/manufacture.model.js");
 
 // Create and Save a new manufacture 
 exports.create = (req, res) => {
@@ -14,7 +14,7 @@ exports.create = (req, res) => {
   
   const date = Date.now();
   // Create a manufacture
-  const manufacture = new Manufacrures({
+  const manufacture = new Manufactures({
     categoryId: req.body.categoryId,
     shopId: req.body.shopId,
     name: req.body.name,
@@ -28,7 +28,7 @@ exports.create = (req, res) => {
   });
 
   // Save manufacture in the database
-  Manufacrures.create(manufacture, (err, data) => {
+  Manufactures.create(manufacture, (err, data) => {
     if (err)
       res.status(500).send({
         message: 
@@ -38,9 +38,9 @@ exports.create = (req, res) => {
   });
 };
 
-// Retrieve all Manufacrures from the database (with condition).
+// Retrieve all Manufactures from the database (with condition).
 exports.findAll = (req, res) => {
-  Manufacrures.getAll(req.query.isDeleted, (err, data) => {
+  Manufactures.getAll(req.query.isDeleted, (err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -52,7 +52,7 @@ exports.findAll = (req, res) => {
 
 // Find a single manufacture by Id
 exports.findOne = (req, res) => {
-  Manufacrures.findById(req.params.id, (err, data) => {
+  Manufactures.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -67,13 +67,13 @@ exports.findOne = (req, res) => {
   });
 };
 
-// find all published Manufacrures
+// find all published Manufactures
 exports.getAllIsDeleted = (req, res) => {
-  Manufacrures.getAllIsDeleted((err, data) => {
+  Manufactures.getAllIsDeleted((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Manufacrures."
+          err.message || "Some error occurred while retrieving Manufactures."
       });
     else res.send(data);
   });
@@ -88,9 +88,9 @@ exports.update = (req, res) => {
     });
   }
 
-  Manufacrures.updateById(
+  Manufactures.updateById(
     req.params.id,
-    new Manufacrures(req.body),
+    new Manufactures(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -109,7 +109,7 @@ exports.update = (req, res) => {
 
 // Delete a manufacture with the specified id in the request
 exports.delete = (req, res) => {
-  Manufacrures.remove(req.params.id, (err, data) => {
+  Manufactures.remove(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -124,14 +124,14 @@ exports.delete = (req, res) => {
   });
 };
 
-// Delete all Manufacrures from the database.
+// Delete all Manufactures from the database.
 exports.deleteAll = (req, res) => {
-  Manufacrures.removeAll((err, data) => {
+  Manufactures.removeAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Manufacrures."
+          err.message || "Some error occurred while removing all Manufactures."
       });
-    else res.send({ message: `All Manufacrures were deleted successfully!` });
+    else res.send({ message: `All Manufactures were deleted successfully!` });
   });
 };

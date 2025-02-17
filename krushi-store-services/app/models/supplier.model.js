@@ -82,8 +82,8 @@ Supplier.getAllIsDeleted = result => {
 
 Supplier.updateById = (id, supplier, result) => {
   sql.query(
-    "UPDATE supplier SET name = ?, shopId = ?, pointOfContact = ?, mobile = ?, email = ? WHERE supplierId = ?",
-    [supplier.name, supplier.shopId, supplier.pointOfContact, supplier.mobile, supplier.email, id],
+    "UPDATE supplier SET name = ?, shopId = ?, pointOfContact = ?, mobile = ?, email = ?, status= ? WHERE supplierId = ?",
+    [supplier.name, supplier.shopId, supplier.pointOfContact, supplier.mobile, supplier.email, supplier.status, id],
     (err, res) => {
       if (err) {
         result(null, err);

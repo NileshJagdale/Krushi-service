@@ -15,16 +15,16 @@ var manufactureServerRoutes = (function () {
     // Retrieve all deleted manufacture
     router.get("/manufacture/deleted", authenticateJWT, manufacture.getAllIsDeleted);
 manufacture
-    // Retrieve a single product with id
+    // Retrieve a single manufacture with id
     router.get("/manufacture/:id", authenticateJWT, manufacture.findOne);
 
-    // Update a product with id
+    // Update a manufacture with id
     router.put("/manufacture/:id", authenticateJWT, manufacture.update);
   
-    // Delete a product with id
+    // Delete a manufacture with id
     router.delete("/manufacture/:id", authenticateJWT, manufacture.delete);
   
-    // Delete all product
+    // Delete all manufactures
     router.delete("/manufacture", authenticateJWT, manufacture.deleteAll);
   
     return router;
