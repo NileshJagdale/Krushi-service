@@ -2,16 +2,18 @@ const sql = require("./db.js");
 
 // constructor
 const User = function (user) {
-  this.name = user.name;
-  this.email = user.email;
+  this.firstName = user.firstName;
+  this.lastName = user.lastName;
+  this.mobileNo = user.mobileNo;
+  this.adharNo = user.adharNo;
   this.address = user.address;
-  this.role = user.role;
-  this.mobile = user.mobile;
-  this.password = user.password;
+  this.status = user.status;
+  this.addedBy = user.addedBy;
+  this.isKycDone = user.isKycDone;
 };
 
 User.create = (newUser, result) => {
-  sql.query("INSERT INTO user SET ?", newUser, (err, res) => {
+  sql.query("INSERT INTO user_master SET ?", newUser, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -50,7 +52,7 @@ User.create = (newUser, result) => {
 // };
 
 User.findById = (id, result) => {
-  sql.query(`SELECT * FROM user WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM user_master WHERE userId = ${id}`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -67,7 +69,7 @@ User.findById = (id, result) => {
 };
 
 User.findByMobile = (mobile, result) => {
-  sql.query(`SELECT * FROM user WHERE mobile = ${mobile}`, (err, res) => {
+  sql.query(`SELECT * FROM user_master WHERE mobileNo = ${mobile}`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -83,7 +85,7 @@ User.findByMobile = (mobile, result) => {
 };
 
 User.findByMobileOrPassword = (params, result) => {
-  sql.query(`SELECT * FROM user WHERE mobile = ${params.mobile} AND password = "${params.password}"`, (err, res) => {
+  sql.query(`SELECT * FROM user_master WHERE mobileNo = ${params.mobile} AND password = "${params.password}"`, (err, res) => {
     if (err) {
       console.log(err);
       result(err, null);
@@ -101,7 +103,7 @@ User.findByMobileOrPassword = (params, result) => {
 };
 
 User.getAll = (isDeleted, result) => {
-  let query = "SELECT * FROM user WHERE isDeleted = false";
+  let query = "SELECT * FROM user_master";
 
   if (isDeleted) {
     query += ` WHERE isDeleted LIKE '%${isDeleted}%'`;
@@ -117,7 +119,7 @@ User.getAll = (isDeleted, result) => {
 };
 
 User.getAllIsDeleted = result => {
-  sql.query("SELECT * FROM user WHERE isDeleted=true", (err, res) => {
+  sql.query("SELECT * FROM user_master WHERE isDeleted=true", (err, res) => {
     if (err) {
       result(null, err);
       return;
@@ -134,8 +136,8 @@ User.updateById = (id, user, result) => {
   console.log(user.role);
   console.log(user);
   sql.query(
-    "UPDATE user SET name = ?, address = ?, mobile = ?, email = ?, password = ?, role = ? WHERE id = ?",
-    [user.name, user.address, user.mobile, user.email, user.password, user.role, id],
+    "UPDATE user_master SET firstName = ?, lastName = ?, mobileNo = ?, adharNo = ?, address = ?, status = ? WHERE userId = ?",
+    [user.firstName, user.lastName, user.mobileNo, user.adharNo, user.address, user.status, id],
     (err, res) => {
       if (err) {
         result(null, err);
@@ -153,7 +155,7 @@ User.updateById = (id, user, result) => {
 };
 
 User.remove = (id, result) => {
-  sql.query("UPDATE user SET isDeleted = true WHERE id = ?", id, (err, res) => {
+  sql.query("UPDATE user_master SET isDeleted = true WHERE userId = ?", id, (err, res) => {
     if (err) {
       result(null, err);
       return;
@@ -170,7 +172,7 @@ User.remove = (id, result) => {
 };
 
 User.removeAll = result => {
-  sql.query("UPDATE user SET isDeleted = true", (err, res) => {
+  sql.query("UPDATE user_master SET isDeleted = true", (err, res) => {
     if (err) {
       result(null, err);
       return;

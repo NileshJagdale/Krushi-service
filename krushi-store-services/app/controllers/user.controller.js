@@ -15,15 +15,15 @@ exports.create = (req, res) => {
   const date = Date.now();
   // Create a Users
   const user = new Users({
-    name: req.body.name,
-    role: req.body.role,
-    email: req.body.email,
-    address: req.body.address,
-    mobile: req.body.mobile,
-    password: req.body.password,
-    createdAt: new Date(date),
-    createdBy: req.body.createdBy,
-    isDeleted: req.body.isDeleted,
+  firstName: req.body.firstName,
+  lastName: req.body.lastName,
+  mobileNo: req.body.mobileNo,
+  adharNo: req.body.adharNo,
+  address: req.body.address,
+  status: req.body.status,
+  addedBy: req.body.addedBy,
+  addedOn: new Date(date),
+  isKycDone: req.body.isKycDone
   });
 
   // Save Users in the database
@@ -39,7 +39,6 @@ exports.create = (req, res) => {
 
 // Retrieve all Userss from the database (with condition).
 exports.findAll = (req, res) => {
-
   Users.getAll(req.query.isDeleted, (err, data) => {
     if (err)
       res.status(500).send({
@@ -141,13 +140,13 @@ exports.delete = (req, res) => {
   });
 };
 
-// Delete all Userss from the database.
+// Delete all Users from the database.
 exports.deleteAll = (req, res) => {
   Users.removeAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Userss."
+          err.message || "Some error occurred while removing all Users."
       });
     else res.send({ message: `All Users were deleted successfully!` });
   });

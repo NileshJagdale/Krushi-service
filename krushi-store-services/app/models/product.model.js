@@ -2,20 +2,23 @@ const sql = require("./db.js");
 
 // constructor
 const Product = function (product) {
-    this.categoryId = product.categoryId;
-    this.shopId = product.shopId;
+    this.productCategoryId = product.productCategoryId;
+    this.storeId = product.storeId;
     this.name = product.name;
     this.shortKey = product.shortKey;
     this.price = product.price;
     this.discountPrice = product.discountPrice;
-    this.qty = product.qty;
+    // this.qty = product.qty;
     this.gst = product.gst;
     this.batchNo = product.batchNo;
-    this.manufactureId = product.manufactureId;
+    this.manufactureDate = product.manufactureDate;
+    this.expiryDate = product.expiryDate;
+    this.status = product.status;
+    this.addedBy = product.addedBy;
 };
 
 Product.create = (newProduct, result) => {
-  sql.query("INSERT INTO product SET ?", newProduct, (err, res) => {
+  sql.query("INSERT INTO products SET ?", newProduct, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -26,7 +29,7 @@ Product.create = (newProduct, result) => {
 };
 
 Product.findById = (id, result) => {
-  sql.query(`SELECT * FROM product WHERE productId = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM products WHERE productId = ${id}`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -43,7 +46,7 @@ Product.findById = (id, result) => {
 };
 
 Product.getAll = (isDeleted, result) => {
-  let query = "SELECT * FROM product";
+  let query = "SELECT * FROM products";
 
   if (isDeleted) {
     query += ` WHERE isDeleted LIKE '%${isDeleted}%'`;
@@ -59,7 +62,7 @@ Product.getAll = (isDeleted, result) => {
 };
 
 Product.getAllIsDeleted = result => {
-  sql.query("SELECT * FROM product WHERE isDeleted=true", (err, res) => {
+  sql.query("SELECT * FROM products WHERE isDeleted=true", (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -70,10 +73,11 @@ Product.getAllIsDeleted = result => {
 
 Product.updateById = (id, product, result) => {
   sql.query(
-    "UPDATE product SET categoryId = ?, shopId = ?, name = ?, shortKey = ?, price = ?, discountPrice = ?, qty = ?, gst = ?, batchNo = ?, manufactureId = ? WHERE productId = ?",
-    [product.categoryId, product.shopId, product.name, product.shortKey, product.price, product.discountPrice, product.qty, product.gst, product.batchNo, product.manufactureId, id],
+    "UPDATE products SET productCategoryId = ?, storeId = ?, name = ?, shortKey = ?, price = ?, discountPrice = ?, gst = ?, batchNo = ?, manufactureDate = ?, expiryDate = ?, status = ?, addedBy = ? WHERE productId = ?",
+    [product.productCategoryId, product.storeId, product.name, product.shortKey, product.price, product.discountPrice, product.gst, product.batchNo, product.manufactureDate, product.expiryDate, product.status, product.addedBy, id],
     (err, res) => {
       if (err) {
+        console.log(err)
         result(err, null);
         return;
       }
@@ -90,7 +94,7 @@ Product.updateById = (id, product, result) => {
 
 
 Product.remove = (id, result) => {
-  sql.query("UPDATE product SET isDeleted = true WHERE productId = ?", id, (err, res) => {
+  sql.query("UPDATE products SET isDeleted = true WHERE productId = ?", id, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -107,7 +111,7 @@ Product.remove = (id, result) => {
 };
 
 Product.removeAll = result => {
-  sql.query("UPDATE product SET isDeleted = true", (err, res) => {
+  sql.query("UPDATE products SET isDeleted = true", (err, res) => {
     if (err) {
       result(err, null);
       return;

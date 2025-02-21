@@ -15,16 +15,20 @@ exports.create = (req, res) => {
   const date = Date.now();
   // Create a product
   const product = new Products({
-    categoryId: req.body.categoryId,
-    shopId: req.body.shopId,
+    productCategoryId: req.body.productCategoryId,
+    storeId: req.body.storeId,
     name: req.body.name,
     shortKey: req.body.shortKey,
     price: req.body.price,
     discountPrice: req.body.discountPrice,
-    qty: req.body.qty,
+    // qty: req.body.qty,
     gst: req.body.gst,
     batchNo: req.body.batchNo,
-    manufactureId: req.body.manufactureId
+    manufactureDate: req.body.manufactureDate,
+    expiryDate: req.body.expiryDate,
+    status: req.body.status,
+    addedBy: req.body.addedBy,
+    addedOn: new Date(date)
   });
 
   // Save product in the database

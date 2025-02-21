@@ -11,15 +11,16 @@ exports.create = (req, res) => {
 
   console.log("Request Body:", req.body); // Debugging line
 
-  
+
   const date = Date.now();
   // Create a category
   const category = new Categories({
+    storeId: req.body.storeId,
     name: req.body.name,
-    shopId: req.body.shopId,
     status: req.body.status,
-    addedOn: new Date(date),
+    isReadOnly: req.body.isReadOnly,
     addedBy: req.body.addedBy,
+    addedOn: new Date(date),
   });
 
   // Save category in the database
@@ -88,6 +89,7 @@ exports.update = (req, res) => {
     new Categories(req.body),
     (err, data) => {
       if (err) {
+        console.log(err)
         if (err.kind === "not_found") {
           res.status(404).send({
             message: `Not found category with id ${req.params.id}.`
