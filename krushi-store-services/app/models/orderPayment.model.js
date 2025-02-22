@@ -1,28 +1,28 @@
 const sql = require("./db.js");
 
 // constructor
-const OrderPayment = function (orderpayment) {
-    this.orderId = orderpayment.orderId;
-    this.userId = orderpayment.userId;
-    this.amount = orderpayment.amount;
-    this.paidDate = orderpayment.paidDate;
-    this.paymentType = orderpayment.paymentType;
-    this.status = orderpayment.status;
+const OrderPayment = function (orderPayment) {
+    this.orderId = orderPayment.orderId;
+    this.userId = orderPayment.userId;
+    this.amount = orderPayment.amount;
+    this.paidDate = orderPayment.paidDate;
+    this.paymentType = orderPayment.paymentType;
+    this.status = orderPayment.status;
 };
 
-OrderPayment.create = (newOrderpayment, result) => {
-  sql.query("INSERT INTO orderpayment SET ?", newOrderpayment, (err, res) => {
+OrderPayment.create = (newOrderPayment, result) => {
+  sql.query("INSERT INTO order_payment SET ?", newOrderPayment, (err, res) => {
     if (err) {
       result(err, null);
       return;
     }
 
-    result(null, { id: res.insertId, ...newOrderpayment });
+    result(null, { id: res.insertId, ...newOrderPayment });
   });
 };
 
 OrderPayment.findById = (id, result) => {
-  sql.query(`SELECT * FROM orderpayment WHERE orderpayment = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM order_payment WHERE orderPaymentId = ${id}`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -39,7 +39,7 @@ OrderPayment.findById = (id, result) => {
 };
 
 OrderPayment.getAll = (isDeleted, result) => {
-  let query = "SELECT * FROM orderpayment";
+  let query = "SELECT * FROM order_payment";
 
   if (isDeleted) {
     query += ` WHERE isDeleted LIKE '%${isDeleted}%'`;
@@ -55,7 +55,7 @@ OrderPayment.getAll = (isDeleted, result) => {
 };
 
 OrderPayment.getAllIsDeleted = result => {
-  sql.query("SELECT * FROM orderpayment WHERE isDeleted=true", (err, res) => {
+  sql.query("SELECT * FROM order_payment WHERE isDeleted=true", (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -64,10 +64,10 @@ OrderPayment.getAllIsDeleted = result => {
   });
 };
 
-OrderPayment.updateById = (id, orderpayment, result) => {
+OrderPayment.updateById = (id, orderPayment, result) => {
   sql.query(
-    "UPDATE orderpayment SET orderId = ?, userId = ?, amount = ?, paidDate = ?, paymentType = ?, status = ? WHERE orderpayment = ?",
-    [orderpayment.orderId, orderpayment.userId, orderpayment.amount, orderpayment.paidDate, orderpayment.paymentType, orderpayment.status, id],
+    "UPDATE order_payment SET orderId = ?, userId = ?, amount = ?, paidDate = ?, paymentType = ?, status = ? WHERE orderPaymentId = ?",
+    [orderPayment.orderId, orderPayment.userId, orderPayment.amount, orderPayment.paidDate, orderPayment.paymentType, orderPayment.status, id],
     (err, res) => {
       if (err) {
         console.log(err)
@@ -80,13 +80,13 @@ OrderPayment.updateById = (id, orderpayment, result) => {
         result({ kind: "not_found" }, null);
         return;
       }
-      result(null, { id: id, ...orderpayment });
+      result(null, { id: id, ...orderPayment });
     }
   );
 };
 
 OrderPayment.remove = (id, result) => {
-  sql.query("UPDATE orderpayment SET isDeleted = true WHERE orderpayment = ?", id, (err, res) => {
+  sql.query("UPDATE order_payment SET isDeleted = true WHERE orderPaymentId = ?", id, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -103,7 +103,7 @@ OrderPayment.remove = (id, result) => {
 };
 
 OrderPayment.removeAll = result => {
-  sql.query("UPDATE orderpayment SET isDeleted = true", (err, res) => {
+  sql.query("UPDATE order_payment SET isDeleted = true", (err, res) => {
     if (err) {
       result(err, null);
       return;

@@ -1,28 +1,30 @@
 const sql = require("./db.js");
 
 // constructor
-const OrderItem = function (orderitem) {
-    this.orderId = orderitem.orderId;
-    this.productId = orderitem.productId;
-    this.qty = orderitem.qty;
-    this.total = orderitem.total;
-    this.status = orderitem.status;
-    this.createdOn = orderitem.createdOn
+const OrderItem = function (orderItem) {
+    this.orderId = orderItem.orderId;
+    this.productId = orderItem.productId;
+    this.qty = orderItem.qty;
+    this.price = orderItem.price;
+    this.total = orderItem.total;
+    this.status = orderItem.status;
+    this.createdOn = orderItem.createdOn
 };
 
-OrderItem.create = (newOrderitem, result) => {
-  sql.query("INSERT INTO orderitem SET ?", newOrderitem, (err, res) => {
+OrderItem.create = (newOrderItem, result) => {
+  sql.query("INSERT INTO order_item SET ?", newOrderItem, (err, res) => {
     if (err) {
       result(err, null);
+      console.log(err)
       return;
     }
 
-    result(null, { id: res.insertId, ...newOrderitem });
+    result(null, { id: res.insertId, ...newOrderItem });
   });
 };
 
 OrderItem.findById = (id, result) => {
-  sql.query(`SELECT * FROM orderitem WHERE orderitem = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM order_item WHERE orderItemId = ${id}`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -39,7 +41,7 @@ OrderItem.findById = (id, result) => {
 };
 
 OrderItem.getAll = (isDeleted, result) => {
-  let query = "SELECT * FROM orderitem";
+  let query = "SELECT * FROM order_item";
 
   if (isDeleted) {
     query += ` WHERE isDeleted LIKE '%${isDeleted}%'`;
@@ -55,7 +57,7 @@ OrderItem.getAll = (isDeleted, result) => {
 };
 
 OrderItem.getAllIsDeleted = result => {
-  sql.query("SELECT * FROM orderitem WHERE isDeleted=true", (err, res) => {
+  sql.query("SELECT * FROM order_item WHERE isDeleted=true", (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -64,10 +66,10 @@ OrderItem.getAllIsDeleted = result => {
   });
 };
 
-OrderItem.updateById = (id, orderitem, result) => {
+OrderItem.updateById = (id, orderItem, result) => {
   sql.query(
-    "UPDATE orderitem SET orderId = ?, productId = ?, qty = ?, price = ?, total = ?, status = ? WHERE orderitem = ?",
-    [orderitem.orderId, orderitem.productId, orderitem.qty, orderitem.price, orderitem.total, orderitem.status, id],
+    "UPDATE order_item SET orderId = ?, productId = ?, qty = ?, price = ?, total = ?, status = ? WHERE orderItemId = ?",
+    [orderItem.orderId, orderItem.productId, orderItem.qty, orderItem.price, orderItem.total, orderItem.status, id],
     (err, res) => {
       if (err) {
         console.log(err)
@@ -76,25 +78,25 @@ OrderItem.updateById = (id, orderitem, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // not found orderitem with the id
+        // not found orderItem with the id
         result({ kind: "not_found" }, null);
         return;
       }
-      result(null, { id: id, ...orderitem });
+      result(null, { id: id, ...orderItem });
     }
   );
 };
 
 
 OrderItem.remove = (id, result) => {
-  sql.query("UPDATE orderitem SET isDeleted = true WHERE orderitem = ?", id, (err, res) => {
+  sql.query("UPDATE order_item SET isDeleted = true WHERE orderItemId = ?", id, (err, res) => {
     if (err) {
       result(err, null);
       return;
     }
 
     if (res.affectedRows == 0) {
-      // not found orderitem with the id
+      // not found orderItem with the id
       result({ kind: "not_found" }, null);
       return;
     }
@@ -104,7 +106,7 @@ OrderItem.remove = (id, result) => {
 };
 
 OrderItem.removeAll = result => {
-  sql.query("UPDATE orderitem SET isDeleted = true", (err, res) => {
+  sql.query("UPDATE order_item SET isDeleted = true", (err, res) => {
     if (err) {
       result(err, null);
       return;

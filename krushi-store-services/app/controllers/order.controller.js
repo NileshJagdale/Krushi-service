@@ -118,7 +118,7 @@ exports.delete = (req, res) => {
           message: "Could not delete order with order " + req.params.id
         });
       }
-    } else res.send({ message: `product was deleted successfully!` });
+    } else res.send({ message: `order was deleted successfully!` });
   });
 };
 

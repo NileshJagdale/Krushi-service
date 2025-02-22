@@ -1,31 +1,31 @@
 var orderPaymentServerRoutes = (function () {
     'use strict';
   
-    const orderpayment = require("../controllers/orderpayment.controller.js");
+    const orderPayment = require("../controllers/orderPayment.controller.js");
     const authenticateJWT = require("./auth.js");
   
     var router = require("express").Router();
   
-    // Create a new orderpayment
-    router.post("/orderpayment", authenticateJWT, orderpayment.create);  
+    // Create a new orderPayment
+    router.post("/orderPayment", authenticateJWT, orderPayment.create);  
   
-    // Retrieve all orderpayment
-    router.get("/orderpayment", authenticateJWT, orderpayment.findAll);
+    // Retrieve all orderPayment
+    router.get("/orderPayment", authenticateJWT, orderPayment.findAll);
   
-    // Retrieve all deleted orderpayment
-    router.get("/orderpayment/deleted", authenticateJWT, orderpayment.getAllIsDeleted);
+    // Retrieve all deleted orderPayment
+    router.get("/orderPayment/deleted", authenticateJWT, orderPayment.getAllIsDeleted);
 
-    // Retrieve a single orderpayment with id
-    router.get("/orderpayment/:id", authenticateJWT, orderpayment.findOne);
+    // Retrieve a single orderPayment with id
+    router.get("/orderPayment/:id", authenticateJWT, orderPayment.findOne);
 
-    // Update a orderpayment with id
-    router.put("/orderpayment/:id", authenticateJWT, orderpayment.update);
+    // Update a orderPayment with id
+    router.put("/orderPayment/:id", authenticateJWT, orderPayment.update);
   
-    // Delete a orderpayment with id
-    router.delete("/orderpayment/:id", authenticateJWT, orderpayment.delete);
+    // Delete a orderPayment with id
+    router.delete("/orderPayment/:id", authenticateJWT, orderPayment.delete);
   
     // Delete all product
-    router.delete("/orderpayment", authenticateJWT, orderpayment.deleteAll);
+    router.delete("/orderPayment", authenticateJWT, orderPayment.deleteAll);
   
     return router;
   

@@ -1,31 +1,31 @@
 var orderItemServerRoutes = (function () {
     'use strict';
   
-    const orderitem = require("../controllers/orderitem.controller.js");
+    const orderItem = require("../controllers/orderItem.controller.js");
     const authenticateJWT = require("./auth.js");
   
     var router = require("express").Router();
   
-    // Create a new orderitem
-    router.post("/orderitem", authenticateJWT, orderitem.create);  
+    // Create a new orderItem
+    router.post("/orderItem", authenticateJWT, orderItem.create);  
   
-    // Retrieve all orderitem
-    router.get("/orderitem", authenticateJWT, orderitem.findAll);
+    // Retrieve all orderItem
+    router.get("/orderItem", authenticateJWT, orderItem.findAll);
   
-    // Retrieve all deleted orderitem
-    router.get("/orderitem/deleted", authenticateJWT, orderitem.getAllIsDeleted);
+    // Retrieve all deleted orderItem
+    router.get("/orderItem/deleted", authenticateJWT, orderItem.getAllIsDeleted);
 
-    // Retrieve a single orderitem with id
-    router.get("/orderitem/:id", authenticateJWT, orderitem.findOne);
+    // Retrieve a single orderItem with id
+    router.get("/orderItem/:id", authenticateJWT, orderItem.findOne);
 
-    // Update a orderitem with id
-    router.put("/orderitem/:id", authenticateJWT, orderitem.update);
+    // Update a orderItem with id
+    router.put("/orderItem/:id", authenticateJWT, orderItem.update);
   
-    // Delete a orderitem with id
-    router.delete("/orderitem/:id", authenticateJWT, orderitem.delete);
+    // Delete a orderItem with id
+    router.delete("/orderItem/:id", authenticateJWT, orderItem.delete);
   
-    // Delete all orderitem
-    router.delete("/orderitem", authenticateJWT, orderitem.deleteAll);
+    // Delete all orderItem
+    router.delete("/orderItem", authenticateJWT, orderItem.deleteAll);
   
     return router;
   
