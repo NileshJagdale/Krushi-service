@@ -38,6 +38,5 @@
 
         var orderPaymentRouter = require('./orderPayment.routes');
         app.use('/api/', orderPaymentRouter);
-
     };
 })(module.exports);
