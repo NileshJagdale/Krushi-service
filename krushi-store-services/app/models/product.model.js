@@ -29,7 +29,7 @@ Product.create = (newProduct, result) => {
 };
 
 Product.findById = (id, result) => {
-  sql.query(`SELECT * FROM products WHERE productId = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM products WHERE productId = ${id} AND status = 'Y'`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -46,7 +46,7 @@ Product.findById = (id, result) => {
 };
 
 Product.getAll = (isDeleted, result) => {
-  let query = "SELECT * FROM products";
+  let query = "SELECT * FROM products WHERE status = 'Y' ORDER BY name";
 
   if (isDeleted) {
     query += ` WHERE isDeleted LIKE '%${isDeleted}%'`;
@@ -62,7 +62,7 @@ Product.getAll = (isDeleted, result) => {
 };
 
 Product.getAllIsDeleted = result => {
-  sql.query("SELECT * FROM products WHERE isDeleted=true", (err, res) => {
+  sql.query("SELECT * FROM products WHERE status = 'D'", (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -94,7 +94,7 @@ Product.updateById = (id, product, result) => {
 
 
 Product.remove = (id, result) => {
-  sql.query("UPDATE products SET isDeleted = true WHERE productId = ?", id, (err, res) => {
+  sql.query("UPDATE products SET status = 'D' WHERE productId = ?", id, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -111,7 +111,7 @@ Product.remove = (id, result) => {
 };
 
 Product.removeAll = result => {
-  sql.query("UPDATE products SET isDeleted = true", (err, res) => {
+  sql.query("UPDATE products SET status = 'D'", (err, res) => {
     if (err) {
       result(err, null);
       return;

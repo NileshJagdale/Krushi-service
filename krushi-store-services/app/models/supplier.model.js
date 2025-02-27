@@ -2,12 +2,18 @@ const sql = require("./db.js");
 
 // constructor
 const Supplier = function (supplier) {
+    this.storeId = supplier.storeId;
+    this.gstNo = supplier.gstNo   
+    this.gstStatus = supplier.gstStatus;
+    this.stateJurisdiction = supplier.stateJurisdiction;
+    this.stateOfSupplier = supplier.stateOfSupplier;
     this.name = supplier.name;
-    this.shopId = supplier.shopId;
-    this.pointOfContact = supplier.pointOfContact;
-    this.mobile = supplier.mobile;
+    this.address = supplier.address;
+    this.contactPerson = supplier.contactPerson;
+    this.contactNo = supplier.contactNo;
     this.email = supplier.email;
     this.status = supplier.status;
+    this.addedBy = supplier.addedBy;
 };
 
 Supplier.create = (newSupplier, result) => {
@@ -22,7 +28,7 @@ Supplier.create = (newSupplier, result) => {
 };
 
 Supplier.findById = (id, result) => {
-  sql.query(`SELECT * FROM supplier WHERE supplierId = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM supplier WHERE supplierId = ${id}  AND status = 'Y'`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -39,7 +45,7 @@ Supplier.findById = (id, result) => {
 };
 
 Supplier.findByMobile = (mobile, result) => {
-  sql.query(`SELECT * FROM supplier WHERE mobile = ${mobile}`, (err, res) => {
+  sql.query(`SELECT * FROM supplier WHERE mobile = ${mobile} AND status = 'Y'`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -55,7 +61,7 @@ Supplier.findByMobile = (mobile, result) => {
 };
 
 Supplier.getAll = (isDeleted, result) => {
-  let query = "SELECT * FROM supplier";
+  let query = "SELECT * FROM supplier WHERE status = 'Y' ORDER BY name";
 
   if (isDeleted) {
     query += ` WHERE isDeleted LIKE '%${isDeleted}%'`;
@@ -71,7 +77,7 @@ Supplier.getAll = (isDeleted, result) => {
 };
 
 Supplier.getAllIsDeleted = result => {
-  sql.query("SELECT * FROM supplier WHERE isDeleted=true", (err, res) => {
+  sql.query("SELECT * FROM supplier WHERE status = 'D'", (err, res) => {
     if (err) {
       result(null, err);
       return;
@@ -82,8 +88,8 @@ Supplier.getAllIsDeleted = result => {
 
 Supplier.updateById = (id, supplier, result) => {
   sql.query(
-    "UPDATE supplier SET name = ?, shopId = ?, pointOfContact = ?, mobile = ?, email = ?, status= ? WHERE supplierId = ?",
-    [supplier.name, supplier.shopId, supplier.pointOfContact, supplier.mobile, supplier.email, supplier.status, id],
+    "UPDATE supplier SET gstNo = ?, gstStatus = ?, stateJurisdiction = ?, stateOfSupplier = ?, name = ?, address = ?, contactPerson = ?, contactNo = ?, email = ?, status= ?, addedBy = ? WHERE supplierId = ?",
+    [supplier.gstNo, supplier.gstStatus, supplier.stateJurisdiction, supplier.stateOfSupplier ,supplier.name, supplier.address, supplier.contactPerson, supplier.contactNo, supplier.email, supplier.status, supplier.addedBy, id],
     (err, res) => {
       if (err) {
         result(null, err);
@@ -101,7 +107,7 @@ Supplier.updateById = (id, supplier, result) => {
 };
 
 Supplier.remove = (id, result) => {
-  sql.query("UPDATE supplier SET isDeleted = true WHERE supplierId = ?", id, (err, res) => {
+  sql.query("UPDATE supplier SET status = 'D' WHERE supplierId = ?", id, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -119,7 +125,7 @@ Supplier.remove = (id, result) => {
 
 
 Supplier.removeAll = result => {
-  sql.query("UPDATE supplier SET isDeleted = true", (err, res) => {
+  sql.query("UPDATE supplier SET status = 'D'", (err, res) => {
     if (err) {
       result(err, null);
       return;

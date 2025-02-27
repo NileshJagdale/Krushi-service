@@ -21,7 +21,7 @@ Category.create = (newCategory, result) => {
 };
 
 Category.findById = (id, result) => {
-  sql.query(`SELECT * FROM product_category WHERE productCategoryId = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM product_category WHERE productCategoryId = ${id} AND status = 'Y'`, (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -38,7 +38,7 @@ Category.findById = (id, result) => {
 };
 
 Category.getAll = (isDeleted, result) => {
-  let query = "SELECT * FROM product_category";
+  let query = "SELECT * FROM product_category WHERE status = 'Y'";
 
   if (isDeleted) {
     query += ` WHERE isDeleted LIKE '%${isDeleted}%'`;
@@ -54,7 +54,7 @@ Category.getAll = (isDeleted, result) => {
 };
 
 Category.getAllIsDeleted = result => {
-  sql.query("SELECT * FROM product_category WHERE isDeleted=true", (err, res) => {
+  sql.query("SELECT * FROM product_category WHERE status = 'D'", (err, res) => {
     if (err) {
       result(err, null);
       return;
@@ -84,7 +84,7 @@ Category.updateById = (id, category, result) => {
 };
 
 Category.remove = (id, result) => {
-  sql.query("UPDATE product_category SET isDeleted = true WHERE productCategoryId = ?", id, (err, res) => {
+  sql.query("UPDATE product_category SET status = 'D' WHERE productCategoryId = ?", id, (err, res) => {
     if (err) {
       console.error("Error executing query:", err);
       result(err, null);
@@ -101,7 +101,7 @@ Category.remove = (id, result) => {
 };
 
 Category.removeAll = result => {
-  sql.query("UPDATE product_category SET isDeleted = true", (err, res) => {
+  sql.query("UPDATE product_category SET status = 'D'", (err, res) => {
     if (err) {
       result(err, null);
       return;

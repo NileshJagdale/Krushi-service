@@ -30,6 +30,9 @@
         var categoryRouter = require('./category.routes');
         app.use('/api/', categoryRouter);
 
+        var basicProductCategoryRouter = require('./basicProductCategory.routes');
+        app.use('/api/', basicProductCategoryRouter);
+
         var orderRouter = require('./order.routes');
         app.use('/api/', orderRouter);
 
