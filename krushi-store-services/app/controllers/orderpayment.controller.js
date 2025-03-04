@@ -1,6 +1,6 @@
-const Orderpayment = require("../models/orderPayment.model");
+const OrderPayment = require("../models/orderPayment.model");
 
-// Create and Save a new orderpayment 
+// Create and Save a new order payment 
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -13,8 +13,8 @@ exports.create = (req, res) => {
 
   
   const date = Date.now();
-  // Create a orderpayment
-  const orderpayment = new Orderpayment({
+  // Create a order payment
+  const orderPayment = new OrderPayment({
     orderId: req.body.orderId,
     userId: req.body.userId,
     amount: req.body.amount,
@@ -23,59 +23,59 @@ exports.create = (req, res) => {
     status: req.body.status,
   });
 
-  // Save orderpayment in the database
-  Orderpayment.create(orderpayment, (err, data) => {
+  // Save order payment in the database
+  OrderPayment.create(orderPayment, (err, data) => {
     if (err)
       res.status(500).send({
         message: 
-          err.message || "Some error occurred while creating the orderpayment."
+          err.message || "Some error occurred while creating the order payment."
       });
     else res.send(data);
   });
 };
 
-// Retrieve all Orderpayment from the database (with condition).
+// Retrieve all Order payment from the database (with condition).
 exports.findAll = (req, res) => {
-  Orderpayment.getAll(req.query.isDeleted, (err, data) => {
+  OrderPayment.getAll(req.query.isDeleted, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving orderpayment."
+          err.message || "Some error occurred while retrieving order payment."
       });
     else res.send(data);
   });
 };
 
-// Find a single orderpayment by Id
+// Find a single order payment by Id
 exports.findOne = (req, res) => {
-  Orderpayment.findById(req.params.id, (err, data) => {
+  OrderPayment.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found orderpayment with id ${req.params.id}.`
+          message: `Not found order payment with id ${req.params.id}.`
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving orderpayment with id " + req.params.id
+          message: "Error retrieving order payment with id " + req.params.id
         });
       }
     } else res.send(data);
   });
 };
 
-// find all published Orderpayment
+// find all published Order payment
 exports.getAllIsDeleted = (req, res) => {
-  Orderpayment.getAllIsDeleted((err, data) => {
+  OrderPayment.getAllIsDeleted((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Orderpayment."
+          err.message || "Some error occurred while retrieving Order payment."
       });
     else res.send(data);
   });
 };
 
-// Update a order identified by the id in the request
+// Update a order payment identified by the id in the request
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
@@ -84,18 +84,18 @@ exports.update = (req, res) => {
     });
   }
 
-  Orderpayment.updateById(
+  OrderPayment.updateById(
     req.params.id,
-    new Orderpayment(req.body),
+    new OrderPayment(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found orderpayment with id ${req.params.id}.`
+            message: `Not found order payment with id ${req.params.id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating orderpayment with id " + req.params.id
+            message: "Error updating order payment with id " + req.params.id
           });
         }
       } else res.send(data);
@@ -103,31 +103,31 @@ exports.update = (req, res) => {
   );
 };
 
-// Delete a orderpayment with the specified id in the request
+// Delete a order payment with the specified id in the request
 exports.delete = (req, res) => {
-  Orderpayment.remove(req.params.id, (err, data) => {
+  OrderPayment.remove(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found orderpayment with id ${req.params.id}.`
+          message: `Not found order payment with id ${req.params.id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete orderpayment with order " + req.params.id
+          message: "Could not delete order payment with order " + req.params.id
         });
       }
-    } else res.send({ message: `product was deleted successfully!` });
+    } else res.send({ message: `order payment was deleted successfully!` });
   });
 };
 
-// Delete all Orderpayment from the database.
+// Delete all Order payment from the database.
 exports.deleteAll = (req, res) => {
-  Orderpayment.removeAll((err, data) => {
+  OrderPayment.removeAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while removing all Orderpayment."
       });
-    else res.send({ message: `All Orderpayment were deleted successfully!` });
+    else res.send({ message: `All Order payment were deleted successfully!` });
   });
 };

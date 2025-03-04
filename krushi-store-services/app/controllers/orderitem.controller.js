@@ -1,6 +1,6 @@
-const Orderitem = require("../models/orderItem.model.js");
+const OrderItem = require("../models/orderItem.model.js");
 
-// Create and Save a new orderitem 
+// Create and Save a new order item 
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -13,70 +13,70 @@ exports.create = (req, res) => {
 
   
   const date = Date.now();
-  // Create a orderitem
-  const orderitem = new Orderitem({
+  // Create a order item
+  const orderItem = new OrderItem({
     orderId: req.body.orderId,
     productId: req.body.productId,
     qty: req.body.qty,
     price: req.body.price,
     total: req.body.qty * req.body.price,
     status: req.body.status,
-    createdOn: req.body.createdOn
+    createdOn: new Date(date)
   });
 
-  // Save orderitem in the database
-  Orderitem.create(orderitem, (err, data) => {
+  // Save order item in the database
+  OrderItem.create(orderItem, (err, data) => {
     if (err)
       res.status(500).send({
         message: 
-          err.message || "Some error occurred while creating the orderitem."
+          err.message || "Some error occurred while creating the order item."
       });
     else res.send(data);
   });
 };
 
-// Retrieve all Orderitem from the database (with condition).
+// Retrieve all Order item from the database (with condition).
 exports.findAll = (req, res) => {
-  Orderitem.getAll(req.query.isDeleted, (err, data) => {
+  OrderItem.getAll(req.query.isDeleted, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving orderitem."
+          err.message || "Some error occurred while retrieving order item."
       });
     else res.send(data);
   });
 };
 
-// Find a single orderitem by Id
+// Find a single order item by Id
 exports.findOne = (req, res) => {
-  Orderitem.findById(req.params.id, (err, data) => {
+  OrderItem.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found orderitem with id ${req.params.id}.`
+          message: `Not found order item with id ${req.params.id}.`
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving orderitem with id " + req.params.id
+          message: "Error retrieving order item with id " + req.params.id
         });
       }
     } else res.send(data);
   });
 };
 
-// find all published Orderitem
+// find all published Order item
 exports.getAllIsDeleted = (req, res) => {
-  Orderitem.getAllIsDeleted((err, data) => {
+  OrderItem.getAllIsDeleted((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving Orderitem."
+          err.message || "Some error occurred while retrieving Order item."
       });
     else res.send(data);
   });
 };
 
-// Update a orderitem identified by the id in the request
+// Update a order item identified by the id in the request
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
@@ -85,18 +85,18 @@ exports.update = (req, res) => {
     });
   }
 
-  Orderitem.updateById(
+  OrderItem.updateById(
     req.params.id,
-    new Orderitem(req.body),
+    new OrderItem(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found orderitem with id ${req.params.id}.`
+            message: `Not found order item with id ${req.params.id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating orderitem with id " + req.params.id
+            message: "Error updating order item with id " + req.params.id
           });
         }
       } else res.send(data);
@@ -104,31 +104,31 @@ exports.update = (req, res) => {
   );
 };
 
-// Delete a orderitem with the specified id in the request
+// Delete a order item with the specified id in the request
 exports.delete = (req, res) => {
-  Orderitem.remove(req.params.id, (err, data) => {
+  OrderItem.remove(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found orderitem with id ${req.params.id}.`
+          message: `Not found order item with id ${req.params.id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete orderitem with orderitem " + req.params.id
+          message: "Could not delete order item with order Item " + req.params.id
         });
       }
-    } else res.send({ message: `product was deleted successfully!` });
+    } else res.send({ message: `order item was deleted successfully!` });
   });
 };
 
-// Delete all Orderitem from the database.
+// Delete all Order item from the database.
 exports.deleteAll = (req, res) => {
-  Orderitem.removeAll((err, data) => {
+  OrderItem.removeAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Orderitem."
+          err.message || "Some error occurred while removing all Order Item."
       });
-    else res.send({ message: `All Orderitem were deleted successfully!` });
+    else res.send({ message: `All Order item were deleted successfully!` });
   });
 };

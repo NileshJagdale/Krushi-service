@@ -15,14 +15,19 @@ exports.create = (req, res) => {
   const date = Date.now();
   // Create a Supplier
   const supplier = new Suppliers({
+    storeId: req.body.storeId,
+    gstNo: req.body.gstNo,  
+    gstStatus: req.body.gstStatus,
+    stateJurisdiction: req.body.stateJurisdiction,
+    stateOfSupplier: req.body.stateOfSupplier,
     name: req.body.name,
-    shopId: req.body.shopId,
-    pointOfContact: req.body.pointOfContact,
-    mobile: req.body.mobile,
+    address: req.body.address,
+    contactPerson: req.body.contactPerson,
+    contactNo: req.body.contactNo,
     email: req.body.email,
     status: req.body.status,
-    addedOn: new Date(date),
     addedBy: req.body.addedBy,
+    addedOn: new Date(date),
   });
 
   // Save Suppliers in the database
